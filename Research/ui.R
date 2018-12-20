@@ -3,23 +3,37 @@ library(markdown)
 library(DT)
 
 shinyUI(navbarPage("Crawling",
-tabPanel("Urls",
+tabPanel("Urls", sidebarLayout(
+            sidebarPanel(
+                        textInput("urlText", label = h3("Add Url"), value = ""),
+                        selectInput("select", label = h3("Type"),
+                            choices = list("Select Type"= 0,"Pipeline" = 1, "Meeting" = 2, "API" = 3),
+                            selected = 0),
+                        actionButton("addUrl", "Submit")
+            ),
          #"Urls Manually Collected"
-            headerPanel("Company Pipelines"),
             mainPanel(
-                      DT::dataTableOutput("PipelineUrls")
+                      h1("Company Pipelines"),
+                      DT::dataTableOutput("PipelineUrls"),
+                      h1("Meetings"),
+                      DT::dataTableOutput("MeetingUrls")
             )
-),
-tabPanel("Keywords", 
+)),
+tabPanel("Keywords", sidebarLayout(
+            sidebarPanel(
+                        textInput("keywordText", label = h3("Add Keyword"), value = ""),
+                        textInput("synonymsText", label = h3("Synonyms (Multiple entry with (,) separation"), value = ""),
+                        actionButton("addKeyword", "Submit")
+            ),
             mainPanel(
                        DT::dataTableOutput("KeywordsInfo")
             )
-),
+)),
 tabPanel("Urls Header",
         sidebarLayout(
             sidebarPanel(
-            textInput("urlInfo", label = h3("URL"), value = "https://www.excelra.com"),
-            actionButton("button1", "Get Page Modified date")
+            textInput("urlInfo", label = h3("Check Page Modified Date"), value = "https://www.excelra.com"),
+            actionButton("button1", "Submit")
             ),
             mainPanel(
                       textOutput("OnPageInfo"),

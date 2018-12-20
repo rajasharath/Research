@@ -19,10 +19,20 @@ function(input, output, session) {
     #----------------------------Urls------------------------------
     completeUrls <- getUrlsWithTypes()
 
-    pipelineUrls <- subset(completeUrls,Name == "Pipeline")
+    pipelineUrls <- subset(completeUrls, Name == "Pipeline")
+
+    meetingUrls <- subset(completeUrls, Name == "Meetings")
 
     output$PipelineUrls = DT::renderDataTable({
+    colnames(pipelineUrls)[1] <- "Url"
+    colnames(pipelineUrls)[2] <- "Type"
     pipelineUrls
+    })
+
+    output$MeetingUrls = DT::renderDataTable({
+    colnames(meetingUrls)[1] <- "Url"
+    colnames(meetingUrls)[2] <- "Type"
+    meetingUrls
     })
 
     #pipelineUrls <- getCompanyPipelineUrls(db_conn)
@@ -34,6 +44,8 @@ function(input, output, session) {
     keywords <- getSearchKeywordsFromDatabase()
 
     output$KeywordsInfo = DT::renderDataTable({
+    colnames(keywords)[1] <- "Keyword"
+    colnames(keywords)[2] <- "Synonyms"
     keywords
     })
 
@@ -41,6 +53,8 @@ function(input, output, session) {
     headerOfUrls <- getPageModifiedDateOfUrlsFromDBUsingCurl()
 
     output$UrlsHeaderInfo = DT::renderDataTable({
+                                                #print(headerOfUrls)
+    #headerOfUrls$modifiedDate <- as.Date(headerOfUrls$modifiedDate, format = '%d%m%Y %H:%M:%S')
     headerOfUrls
     })
 
