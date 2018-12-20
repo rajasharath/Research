@@ -13,6 +13,14 @@ getDataBases <- function(db_conn) {
     sqlQuery(db_conn, "select name from master.sys.sysdatabases where dbid > 4")
 }
 
+getUrlsWithTypes <- function() {
+   data<- sqlQuery(db_conn," SELECT [WebCrawling].[dbo].[WebCrawl_Urls].[URLs_for_search__Company_websites_Conferences_]
+      ,[WebCrawling].[dbo].[UrlType].[Name]
+  FROM [WebCrawling].[dbo].[WebCrawl_Urls]
+  left outer join [WebCrawling].[dbo].[UrlType] on [WebCrawl_Urls].[UrlTypeId] = [WebCrawling].[dbo].[UrlType].[Id]")
+    return(data)
+}
+
 getCompanyPipelineUrls <- function(db_conn) {
     data <- sqlQuery(db_conn, "SELECT [Id], [CompanyName], [PipelineUrl] FROM [WebCrawling] .[dbo] .[Company_PipelineUrl]")
     return(data)

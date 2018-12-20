@@ -3,9 +3,42 @@ library(markdown)
 library(DT)
 
 shinyUI(navbarPage("Crawling",
+tabPanel("Urls",
+         #"Urls Manually Collected"
+            headerPanel("Company Pipelines"),
+            mainPanel(
+                      DT::dataTableOutput("PipelineUrls")
+            )
+),
+tabPanel("Keywords", 
+            mainPanel(
+                       DT::dataTableOutput("KeywordsInfo")
+            )
+),
+tabPanel("Urls Header",
+        sidebarLayout(
+            sidebarPanel(
+            textInput("urlInfo", label = h3("URL"), value = "https://www.excelra.com"),
+            actionButton("button1", "Get Page Modified date")
+            ),
+            mainPanel(
+                      textOutput("OnPageInfo"),
+                      DT::dataTableOutput("UrlsHeaderInfo")
+            )
+)),
+#tabPanel("Company Pipelines",
+        #sidebarLayout(
+            #sidebarPanel(
+            #textInput("urlPipeline", label = h3("URL"), value = ""),
+            #actionButton("pipelineButton", "Add Pipeline Url")
+            #),
+            #mainPanel(
+                        #DT::dataTableOutput("PipelineInfo")
+            #)
+#)),
 tabPanel("Uploading Files",
 
-                # Sidebar layout with input and output definitions ----
+# Sidebar layout with input and output definitions ----
                 sidebarLayout(
 
                 # Sidebar panel for inputs ----
@@ -59,37 +92,8 @@ tabPanel("Uploading Files",
 
                 )
                    ),
-tabPanel("Urls",
-         #"Urls Manually Collected"
-            mainPanel(
-                       DT::dataTableOutput("UrlsHeaderInfo")
-            )
-),
-tabPanel("Keywords", 
-            mainPanel(
-                       DT::dataTableOutput("KeywordsInfo")
-            )
-),
-tabPanel("Urls Header",
-        sidebarLayout(
-            sidebarPanel(
-            textInput("urlInfo", label = h3("URL"), value = "https://www.excelra.com"),
-            actionButton("button1", "Get Page Modified date")
-            ),
-            mainPanel(
-                      textOutput("OnPageInfo")                     
-            )
-)),
-tabPanel("Company Pipelines",
-        sidebarLayout(
-            sidebarPanel(
-            textInput("urlPipeline", label = h3("URL"), value = ""),
-            actionButton("pipelineButton", "Add Pipeline Url")
-            ),
-            mainPanel(
-                        DT::dataTableOutput("PipelineInfo")
-            )
-)),
+
+navbarMenu("More",
 tabPanel("API's",
         sidebarLayout(
             sidebarPanel(
@@ -116,7 +120,6 @@ tabPanel("Plot",
 tabPanel("Summary",
                    verbatimTextOutput("summary")
                    ),
-navbarMenu("More",
          tabPanel("DataTable"),
          tabPanel("Description"),
          tabPanel("Clustering"),

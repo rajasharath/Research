@@ -16,6 +16,45 @@ source('D:\\R\\Research\\Research\\Research\\DataSources\\pageContent.R')
 db_conn = odbcConnect('WebCrawling')
 
 function(input, output, session) {
+    #----------------------------Urls------------------------------
+    completeUrls <- getUrlsWithTypes()
+
+    pipelineUrls <- subset(completeUrls,Name == "Pipeline")
+
+    output$PipelineUrls = DT::renderDataTable({
+    pipelineUrls
+    })
+
+    #pipelineUrls <- getCompanyPipelineUrls(db_conn)
+
+    #output$PipelineInfo = DT::renderDataTable({
+    #pipelineUrls
+    #})
+    #-------------------Keywords-----------------------------
+    keywords <- getSearchKeywordsFromDatabase()
+
+    output$KeywordsInfo = DT::renderDataTable({
+    keywords
+    })
+
+    #----------------Headers of Urls------------------------
+    headerOfUrls <- getPageModifiedDateOfUrlsFromDBUsingCurl()
+
+    output$UrlsHeaderInfo = DT::renderDataTable({
+    headerOfUrls
+    })
+
+    observeEvent(input$button1, {
+    r <- GET("https://www.excelra.com")
+    OnPageInfo(as.character(headers(r)$date))
+    })
+
+    #output$OnPageInfo <- renderText({
+    #df1 <- curl - I (input$urlInfo)
+    #paste(df1)
+    #})
+
+    #-----------------Upload file-----------------------------
     output$contents <- renderTable({
 
         # input$file1 will be NULL initially. After the user selects
@@ -47,42 +86,15 @@ function(input, output, session) {
 
     })
 
+    #--------------------Plot---------------------------------
     output$plot <- renderPlot({
         plot(cars,type=input$plote)
     })
 
+    #-------------------Summary-------------------------------
     output$summary <- renderPrint({
         summary(cars)
     })
-
-    #output$OnPageInfo <- renderText({
-        #df1 <- curl - I (input$urlInfo)
-        #paste(df1)
-    #})
-
-    observeEvent(input$button1, {
-         r <- GET("https://www.excelra.com")
-         OnPageInfo(as.character(headers(r)$date))
-    })
-
-    pipelineUrls <- getCompanyPipelineUrls(db_conn)
-
-    output$PipelineInfo = DT::renderDataTable({                                          
-     pipelineUrls
-    })
-
-    headerOfUrls <- getPageModifiedDateOfUrlsFromDBUsingCurl()
-
-    output$UrlsHeaderInfo = DT::renderDataTable({
-    headerOfUrls
-    })
-
-    keywords <- getSearchKeywordsFromDatabase()
-
-    output$KeywordsInfo = DT::renderDataTable({
-    keywords
-    })
-
 }
 
 

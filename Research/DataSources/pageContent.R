@@ -15,9 +15,10 @@ getPageHeaderUsingCurl <- function(urlInfo) {
 }
 
 getPageModifiedDateUsingCurl <- function(urlInfo) {
-    for(url in dbdata)
-    req <- curl_fetch_memory(urlInfo)
-    str(req$modified)
+    req <- curl_fetch_memory(url)
+    modifiedDate <- req$modified #str(req$modified)
+    statusCode <- req$status_code
+    headerDataFrame <- data.frame(url, modifiedDate = unlist(modifiedDate), statusCode)
 }
 
 
